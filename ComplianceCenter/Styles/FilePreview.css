@@ -1,0 +1,138 @@
+﻿/* ====================================================
+   FilePreview.css - עיצוב מודל תצוגה מקדימה
+   ==================================================== */
+
+/* Modal כללי */
+#filePreviewModal .modal-dialog {
+    max-width: 90%;
+}
+
+#filePreviewModal .modal-body {
+    position: relative;
+    overflow: auto;
+}
+
+/* Loader */
+#previewLoader {
+    padding: 60px 20px;
+}
+
+    #previewLoader .spinner-border {
+        animation: spinner-grow 1s ease-in-out infinite;
+    }
+
+/* תמונה */
+#imagePreviewContainer {
+    background: #f8f9fa;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#previewImage {
+    transition: transform 0.3s ease, max-height 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+    #previewImage:hover {
+        box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+    }
+
+/* כפתורים */
+#imagePreviewContainer .btn-group {
+    margin-top: 20px;
+}
+
+#imagePreviewContainer .btn {
+    margin: 0 5px;
+}
+
+/* PDF */
+#pdfPreviewContainer iframe {
+    display: block;
+}
+
+/* שגיאה */
+#previewError {
+    padding: 60px 20px;
+}
+
+    #previewError .fa-exclamation-triangle {
+        color: #ffc107;
+    }
+
+/* אנימציות */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#imagePreviewContainer,
+#pdfPreviewContainer,
+#previewError {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #filePreviewModal .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+
+    #previewImage {
+        max-height: 50vh !important;
+    }
+
+    #pdfPreviewContainer iframe {
+        height: 50vh !important;
+    }
+}
+
+/* Dark mode support (אופציונלי) */
+@media (prefers-color-scheme: dark) {
+    #filePreviewModal .modal-content {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+
+    #filePreviewModal .modal-body {
+        background: #2d2d2d !important;
+    }
+
+    #imagePreviewContainer {
+        background: #2d2d2d !important;
+    }
+}
+
+/* Zoom effect */
+#previewImage.zoomed {
+    cursor: zoom-out !important;
+    max-height: none !important;
+    max-width: none !important;
+    width: auto;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+#previewLoader p {
+    animation: pulse 2s ease-in-out infinite;
+}

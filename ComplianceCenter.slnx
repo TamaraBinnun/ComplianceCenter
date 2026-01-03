@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ComplianceCenter.BLL/ComplianceCenter.BLL.csproj" Id="a67646d9-6ff9-4e3a-9808-f70e64f32e68" />
+  <Project Path="ComplianceCenter.DAL/ComplianceCenter.DAL.csproj" Id="4d8ca03a-dbc3-43e7-aa31-05302730cd46" />
+  <Project Path="ComplianceCenter/ComplianceCenter.csproj" Id="276ff5b0-7bcd-4e04-9550-c3ce32332d8e" />
+</Solution>
