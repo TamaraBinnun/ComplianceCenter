@@ -37,7 +37,7 @@ ComplianceCenter/
 │   ├── Dashboard.aspx           # דשבורד מרכזי
 │   ├── DepartmentDetails.aspx    # פרטי מחלקה
 │   ├── EmployeeProfile.aspx      # פרופיל עובד
-│   └── AIReplacements.aspx       # המלצות AI
+│   └── Replacements.aspx       # המלצות להחלפת עובד
 ├── Account/            # ניהול משתמשים
 │   └── Login.aspx               # התחברות
 ├── Controls/           # User Controls
@@ -114,70 +114,6 @@ ComplianceCenter.DAL/
 
 ---
 
-## תרשים ארכיטקטורה
-
-```mermaid
-graph TB
-    subgraph "Presentation Layer"
-        A[Dashboard.aspx]
-        B[DepartmentDetails.aspx]
-        C[EmployeeProfile.aspx]
-        D[SmartCertUpload.ascx]
-    end
-    
-    subgraph "Business Logic Layer"
-        E[DepartmentManager]
-        F[EmployeeManager]
-        G[CertificationManager]
-        H[ReadinessCalculator]
-        I[RecommendationEngine]
-        J[EmailService]
-    end
-    
-    subgraph "Data Access Layer"
-        K[Entity Framework]
-        L[ComplianceCenterEntities]
-    end
-    
-    subgraph "Database"
-        M[(SQL Server)]
-        N[Stored Procedures]
-    end
-    
-    A --> E
-    B --> E
-    C --> F
-    C --> G
-    D --> G
-    
-    E --> H
-    E --> I
-    F --> H
-    G --> H
-    
-    E --> K
-    F --> K
-    G --> K
-    H --> K
-    I --> K
-    
-    K --> L
-    L --> M
-    L --> N
-    
-    H --> J
-    
-    style A fill:#e1f5ff
-    style B fill:#e1f5ff
-    style C fill:#e1f5ff
-    style E fill:#fff4e1
-    style F fill:#fff4e1
-    style G fill:#fff4e1
-    style K fill:#e8f5e9
-    style M fill:#fce4ec
-```
-
----
 
 ## מבנה מסד נתונים
 
@@ -510,87 +446,7 @@ public List<ReplacementSuggestionResult> SuggestReplacements(
 
 ---
 
-## תהליכי עבודה
 
-### 1. תהליך טעינת Dashboard
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant D as Dashboard.aspx
-    participant DM as DepartmentManager
-    participant SP as Stored Procedure
-    participant DB as Database
-    
-    U->>D: גישה לדשבורד
-    D->>DM: GetAllDepartmentsReadiness()
-    DM->>SP: sp_CalculateDepartmentReadiness (לכל מחלקה)
-    SP->>DB: חישוב כשירות
-    DB-->>SP: תוצאות
-    SP-->>DM: DepartmentReadinessResult
-    DM-->>D: List<DepartmentReadinessResult>
-    D->>D: חישוב KPIs
-    D->>D: טעינת גרפים
-    D-->>U: הצגת דשבורד
-```
-
-### 2. תהליך הצגת פרופיל עובד
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant EP as EmployeeProfile.aspx
-    participant EM as EmployeeManager
-    participant CM as CertificationManager
-    participant SM as ShiftManager
-    participant DB as Database
-    
-    U->>EP: גישה לפרופיל עובד
-    EP->>EM: GetEmployeeById(id)
-    EM->>DB: טעינת עובד
-    DB-->>EM: Employee
-    EM-->>EP: Employee
-    
-    EP->>CM: GetEmployeeCertifications(id)
-    CM->>DB: טעינת הסמכות
-    DB-->>CM: List<EmployeeCertification>
-    CM-->>EP: List<EmployeeCertification>
-    
-    EP->>SM: GetEmployeeShifts(id)
-    SM->>DB: טעינת משמרות
-    DB-->>SM: List<ShiftAssignment>
-    SM-->>EP: List<ShiftAssignment>
-    
-    EP->>EP: חישוב סטטיסטיקות
-    EP-->>U: הצגת פרופיל
-```
-
-### 3. תהליך העלאת הסמכה
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant SCU as SmartCertUpload.ascx
-    participant CM as CertificationManager
-    participant FS as File System
-    participant DB as Database
-    
-    U->>SCU: העלאת קובץ הסמכה
-    SCU->>SCU: בדיקת סוג קובץ
-    SCU->>SCU: בדיקת גודל
-    SCU->>FS: שמירת קובץ
-    FS-->>SCU: נתיב קובץ
-    
-    SCU->>CM: AddEmployeeCertification()
-    CM->>DB: יצירת רשומה
-    DB-->>CM: EmployeeCertificationID
-    CM-->>SCU: אישור
-    
-    SCU->>SCU: CertificationSaved Event
-    SCU-->>U: הצגת הודעה
-```
-
----
 
 ## Stored Procedures
 
